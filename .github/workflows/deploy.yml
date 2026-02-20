@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ] # Verander dit naar 'master' als je hoofdtak zo heet
+    branches: [ main ] # Verander naar 'master' als je hoofdtak zo heet
 
 jobs:
   build-and-deploy:
@@ -11,13 +11,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # Stap 1: Installeer de Rust toolchain
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      # Stap 2: Installeer wasm-pack (nodig voor de webpack-plugin)
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      # Stap 3: Installeer Node dependencies en bouw het project
       - name: Install and Build
         run: |
           npm install
           npm run build
 
+      # Stap 4: Deploy de 'dist' map naar de gh-pages branch
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist # De map die Webpack aanmaakt (check even of dit dist is)
-          branch: gh-pages # De actie maakt deze branch voor je aan
+          folder: dist
+          branch: gh-pages
