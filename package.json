@@ -1,6 +1,6 @@
 {
   "name": "headsup-calc",
-  "homepage": "https://timderyck.github.io/",
+  //"homepage": "https://timderyck.github.io/",
   "version": "0.0.1",
   "description": "Online odds calclator for heads-up Texas hold'em poker",
   "main": "index.js",
